@@ -57,7 +57,9 @@
   /* ---------- widget area / grid ---------- */
   /* no z-index here: it must not create a stacking context, so a lifted widget (z75)
      can float ABOVE the quick-action scrim (z72) — the pressed widget is never dimmed */
-  .area-clip { position:absolute; top:172px; left:0; right:0; bottom:0; overflow-y:auto; overflow-x:hidden; }
+  .area-clip { position:absolute; top:172px; left:0; right:0; bottom:0; overflow-y:auto; overflow-x:hidden;
+    scrollbar-width:none; -ms-overflow-style:none; } /* no visible scrollbar */
+  .area-clip::-webkit-scrollbar { display:none; }
   .area { position:relative; min-height:100%; }
   .gridlines { position:absolute; left:24px; top:0; width:366px; pointer-events:none; z-index:1; opacity:0; transition:opacity .2s; }
   .gridlines.show { opacity:1; }
