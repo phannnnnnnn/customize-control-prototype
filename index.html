@@ -350,7 +350,7 @@
   <div class="sheet s2" id="sheet2">
     <div class="grab"></div>
     <div class="sheet-head">
-      <button class="backbtn" id="sheet2-back"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M17 10H3.5M9 4.5L3.5 10L9 15.5" stroke="#111" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <span class="sp"></span>
       <h3 id="sheet2-title">Deposit Account</h3>
       <button class="xbtn" id="sheet-x2"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 2L14 14M14 2L2 14" stroke="#0064FF" stroke-width="1.8" stroke-linecap="round"/></svg></button>
     </div>
@@ -364,7 +364,7 @@
   <div class="sheet s3" id="sheet3">
     <div class="grab"></div>
     <div class="sheet-head">
-      <button class="backbtn" id="sheet3-back"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M17 10H3.5M9 4.5L3.5 10L9 15.5" stroke="#111" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <span class="sp"></span>
       <h3 id="sheet3-title">Deposit Account</h3>
       <button class="xbtn" id="sheet-x3"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 2L14 14M14 2L2 14" stroke="#0064FF" stroke-width="1.8" stroke-linecap="round"/></svg></button>
     </div>
@@ -1253,10 +1253,7 @@
   $('sheet-x1').addEventListener('click', closeSheet);
   $('sheet-x2').addEventListener('click', closeSheet);
   $('sheet-x3').addEventListener('click', closeSheet);
-  $('sheet2-back').addEventListener('click', closeSheet2);
-  $('sheet3-back').addEventListener('click', () => {
-    if (editTarget) closeSheet(); else closeSheet3();
-  });
+  // back buttons removed from sheet 2 / sheet 3 headers — X closes the whole flow
   $('scrim').addEventListener('pointerdown', () => {
     if (['sheet1','sheet2','sheet3'].some(id => $(id).classList.contains('show'))) closeSheet();
   });
@@ -1322,6 +1319,7 @@
       return;
     }
     const type = sheetType, items = [...pickedItems];
+    if (mode !== 'default') setMode('default'); // stacked M widget also lands on the Default page
     animateDrop('M', () => addWidget(type, 'M', {stack:true, items}));
     closeSheet();
   });
