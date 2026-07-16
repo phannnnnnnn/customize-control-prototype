@@ -257,8 +257,9 @@
   .tabbar { position:absolute; left:24px; right:24px; bottom:0; height:90px; z-index:50;
     background:#fff; border-radius:20px 20px 0 0; box-shadow:0 0 30px rgba(0,0,0,.10);
     display:flex; justify-content:space-around; align-items:flex-start; padding:16px 8px 0;
-    transition:opacity .3s ease; }
-  .mode-customize .tabbar { opacity:0; pointer-events:none; }
+    transition:transform .35s cubic-bezier(.32,.72,0,1); }
+  /* enter customize: footer slides DOWN off-screen · exit: slides back UP */
+  .mode-customize .tabbar { transform:translateY(120%); pointer-events:none; }
   .tab { width:81px; display:flex; flex-direction:column; align-items:center; gap:4px;
     font-size:16px; line-height:22px; color:#78787d; }
   .tab svg { width:24px; height:24px; }
@@ -291,6 +292,12 @@
     font-family:ui-monospace, SFMono-Regular, Menlo, monospace; }
   .hint2 { font-size:11px; color:#5a637a; margin-bottom:8px; }
   .note { font-size:11.5px; color:#8f98ac; line-height:1.5; margin-top:10px; }
+
+  /* floating "Show interface" chip when the panel is hidden for testing */
+  .showui { position:fixed; top:16px; right:16px; z-index:200; display:none;
+    padding:9px 14px; border-radius:10px; border:none; cursor:pointer;
+    background:#333a4c; color:#e8eaf0; font-size:13px; font-weight:600; }
+  .showui.on { display:block; }
 
   /* ---------- responsive: phone scales to viewport, panel stacks below ---------- */
   @media (max-width: 899px){
@@ -424,7 +431,9 @@
   <div class="homebar"></div>
 </div>
 
-<div class="panel">
+<button class="showui" id="showui">Show interface</button>
+
+<div class="panel" id="panel">
   <h1>Customize Prototype v4</h1>
   <div class="sub">Add (size gallery + stackable) · Edit Stack · Reorder · Delete · Resize — Z-pattern engine</div>
 
@@ -433,6 +442,7 @@
     <button class="btn" id="p-editstack">Edit Stack</button>
     <button class="btn" id="p-add">Add Widget</button>
     <button class="btn" id="p-reset">Reset demo</button>
+    <button class="btn" id="p-hide">Hide interface</button>
   </div>
   <div class="group">
     <label class="toggle"><input type="checkbox" id="showGrid"> Show grid cells (like spec "Grid System")</label>
@@ -1452,6 +1462,15 @@
   $('p-add').addEventListener('click', () => { if (guardAdd()) openSheet(); });
   $('p-reset').addEventListener('click', reset);
   $('showGrid').addEventListener('change', e => $('gridlines').classList.toggle('show', e.target.checked));
+  // hide / show the whole right-side interface (for clean testing)
+  $('p-hide').addEventListener('click', () => {
+    $('panel').style.display = 'none';
+    $('showui').classList.add('on');
+  });
+  $('showui').addEventListener('click', () => {
+    $('panel').style.display = '';
+    $('showui').classList.remove('on');
+  });
   $('showEdit').addEventListener('change', e => {
     $('btn-edit').style.display = e.target.checked ? '' : 'none';
     log('Edit icon on default header: ' + (e.target.checked ? 'shown' : 'hidden') +
